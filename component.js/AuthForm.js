@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import Input from "./Input"; // Başka bir dosyadan Input bileşenini içe aktarıyoruz.
+import Button from "./Button";
 
 export default function AuthForm({ isLogin }) {
   const [enteredEmail, setEnteredEmail] = useState(""); // E-posta adresini saklamak için state tanımlıyoruz.
@@ -35,8 +36,16 @@ export default function AuthForm({ isLogin }) {
         onUpdateValue={updateInput.bind(this, "password")}
         value={enteredPassword} // Burada hata var, enteredEmail değeri yerine enteredPassword olmalı.
       />
+      <View style={styles.buttons}>
+        <Button>{isLogin ? "Giriş Yap" : "Kayıt Ol"}</Button>
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttons: {
+    marginTop: 10,
+    
+  }
+});

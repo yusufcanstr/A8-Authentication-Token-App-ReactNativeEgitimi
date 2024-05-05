@@ -8,19 +8,33 @@ import HomeScreen from "./screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
-function NormalStack(){
-  return(
-    <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
+function NormalStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#87cefa",
+        },
+        headerTintColor: "white",
+        contentStyle: {
+          backgroundColor: "#F8F6F4",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerTitle: "Kullanıcı Giriş" }}
+      />
+      <Stack.Screen name="Signup" component={SignupScreen} />
     </Stack.Navigator>
-  )
+  );
 }
 
 export default function App() {
   return (
     <NavigationContainer>
-      <NormalStack/>
+      <NormalStack />
     </NavigationContainer>
   );
 }
