@@ -3,11 +3,25 @@ import React, { useState } from "react";
 import Input from "./Input"; // Başka bir dosyadan Input bileşenini içe aktarıyoruz.
 import Button from "./Button";
 
-export default function AuthForm({ isLogin, onSubmit }) {
+export default function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   const [enteredEmail, setEnteredEmail] = useState(""); // E-posta adresini saklamak için state tanımlıyoruz.
   const [enteredPassword, setEnteredPassword] = useState(""); // Şifreyi saklamak için state tanımlıyoruz.
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
+
+  console.log(credentialsInvalid);
+  const {
+    email: emailIsInvalid,
+    confirmEmail: emailsDontMatch,
+    password: passwordIsInvalid,
+    confirimPassword: passwordDontMatch,
+  } = credentialsInvalid;
+  console.log(
+    emailIsInvalid,
+    emailsDontMatch,
+    passwordIsInvalid,
+    passwordDontMatch
+  );
 
   function submitHandler() {
     onSubmit({
@@ -44,6 +58,7 @@ export default function AuthForm({ isLogin, onSubmit }) {
         keyboardType="email_address"
         onUpdateValue={updateInput.bind(this, "email")}
         value={enteredEmail} // E-posta değerini Input bileşenine iletiyoruz.
+        isInvalid={emailIsInvalid}
       />
       {!isLogin && (
         <Input
@@ -51,6 +66,7 @@ export default function AuthForm({ isLogin, onSubmit }) {
           keyboardType="email_address"
           onUpdateValue={updateInput.bind(this, "confirmEmail")}
           value={enteredConfirmEmail} // E-posta değerini Input bileşenine iletiyoruz.
+          isInvalid={emailsDontMatch}
         />
       )}
 
@@ -60,6 +76,7 @@ export default function AuthForm({ isLogin, onSubmit }) {
         secure // Şifrenin gizli olarak görüntülenmesini sağlayacak prop'u ekliyoruz.
         onUpdateValue={updateInput.bind(this, "password")}
         value={enteredPassword} // Burada hata var, enteredEmail değeri yerine enteredPassword olmalı.
+        isInvalid={passwordIsInvalid}
       />
       {!isLogin && (
         <Input
@@ -67,6 +84,7 @@ export default function AuthForm({ isLogin, onSubmit }) {
           secure
           onUpdateValue={updateInput.bind(this, "confirmPassword")}
           value={enteredConfirmPassword} // E-posta değerini Input bileşenine iletiyoruz.
+          isInvalid={passwordDontMatch}
         />
       )}
       <View style={styles.buttons}>
