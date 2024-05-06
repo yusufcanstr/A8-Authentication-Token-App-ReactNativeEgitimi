@@ -1,11 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import AuthContent from '../component.js/AuthContent'
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import AuthContent from "../component.js/AuthContent";
+import Loading from "./Loading";
+import { login } from "../util/auth";
 
 export default function LoginScreen() {
-  return (
-    <AuthContent isLogin/>
-  )
+  const [isAuthanticating, setIsAuthanticating] = useState(false);
+
+  async function LoginHandler({ email, password }) {
+    setIsAuthanticating(true);
+    await login(email, password);
+    setIsAuthanticating(false);
+  }
+
+  if (isAuthanticating) {
+    return <Loading message="Giriş Yapılıyor..." />;
+  }
+
+  return <AuthContent isLogin onAuthenticate={LoginHandler} />;
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
