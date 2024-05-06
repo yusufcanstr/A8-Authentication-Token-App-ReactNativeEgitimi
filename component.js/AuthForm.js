@@ -3,11 +3,20 @@ import React, { useState } from "react";
 import Input from "./Input"; // Başka bir dosyadan Input bileşenini içe aktarıyoruz.
 import Button from "./Button";
 
-export default function AuthForm({ isLogin }) {
+export default function AuthForm({ isLogin, onSubmit }) {
   const [enteredEmail, setEnteredEmail] = useState(""); // E-posta adresini saklamak için state tanımlıyoruz.
   const [enteredPassword, setEnteredPassword] = useState(""); // Şifreyi saklamak için state tanımlıyoruz.
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState("");
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
+
+  function submitHandler() {
+    onSubmit({
+      email: enteredEmail,
+      confirmEmail: enteredConfirmEmail,
+      password: enteredPassword,
+      confirmPassword: enteredConfirmPassword,
+    });
+  }
 
   // Kullanıcıdan gelen giriş bilgilerini güncellemek için bir fonksiyon tanımlıyoruz.
   function updateInput(inputType, enteredValue) {
@@ -19,10 +28,10 @@ export default function AuthForm({ isLogin }) {
         setEnteredPassword(enteredValue); // Şifre state'ini güncelliyoruz.
         break;
       case "confirmEmail":
-        setEnteredConfirmEmail(enteredValue); 
+        setEnteredConfirmEmail(enteredValue);
         break;
       case "confirmPassword":
-        setEnteredConfirmPassword(enteredValue); 
+        setEnteredConfirmPassword(enteredValue);
         break;
     }
   }
@@ -61,7 +70,9 @@ export default function AuthForm({ isLogin }) {
         />
       )}
       <View style={styles.buttons}>
-        <Button>{isLogin ? "Giriş Yap" : "Kayıt Ol"}</Button>
+        <Button onPress={submitHandler}>
+          {isLogin ? "Giriş Yap" : "Kayıt Ol"}
+        </Button>
       </View>
     </View>
   );
