@@ -5,7 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignupScreen from "./screens/SignupScreen";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import AuthContextProvider from "./store/auth-context.js";
+import AuthContextProvider, { AuthContext } from "./store/auth-context.js";
+import { useContext } from "react";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,12 +37,42 @@ function NormalStack() {
   );
 }
 
+function AfterAuthenticatedStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#87cefa",
+        },
+        headerTintColor: "white",
+        contentStyle: {
+          backgroundColor: "#F8F6F4",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerTitle: "Anasayfa" }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function Navigation() {
+  const authContext = useContext(AuthContext);
+  return (
+    <NavigationContainer>
+      {!authContext.authenticate && <NormalStack />} 
+      {authContext.authenticate && <AfterAuthenticatedStack />} 
+    </NavigationContainer>
+  );
+}
+
 export default function App() {
   return (
     <AuthContextProvider>
-      <NavigationContainer>
-        <NormalStack />
-      </NavigationContainer>
+      <Navigation />
     </AuthContextProvider>
   );
 }
