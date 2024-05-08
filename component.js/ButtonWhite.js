@@ -16,7 +16,6 @@ export default function ButtonWhite({ children, onPress }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#FA7070",
     paddingHorizontal: 4,
     paddingVertical: 10,
     borderRadius: 20,
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "white",
+    color: "#153448",
     fontWeight: "bold",
   },
 });
