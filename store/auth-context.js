@@ -14,8 +14,8 @@ function AuthContextProvider({ children }) {
     setAuthToken(token);
   }
 
-  function logout(token) {
-    setAuthToken("");
+  function logout() {
+    setAuthToken(null);
   }
 
   const value = {

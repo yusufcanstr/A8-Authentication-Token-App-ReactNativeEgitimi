@@ -1,12 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignupScreen from "./screens/SignupScreen";
-import LoginScreen from "./screens/LoginScreen";
-import HomeScreen from "./screens/HomeScreen";
-import AuthContextProvider, { AuthContext } from "./store/auth-context.js";
-import { useContext } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './screens/LoginScreen';
+import SignupScreen from './screens/SignupScreen';
+import AuthContextProvider, { AuthContext } from './store/auth-context';
+import HomeScreen from './screens/HomeScreen';
+import { useContext } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,45 +16,60 @@ function NormalStack() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#87cefa",
+          backgroundColor: '#1679AB',
         },
-        headerTintColor: "white",
+        headerTintColor: 'white',
         contentStyle: {
-          backgroundColor: "#F8F6F4",
+          backgroundColor: 'white',
         },
       }}
     >
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerTitle: "Kullanıcı Giriş" }}
+        options={{
+          headerTitle: 'Kullanıcı Giriş',
+        }}
       />
       <Stack.Screen
         name="Signup"
         component={SignupScreen}
-        options={{ headerTitle: "Kullanıcı Oluştur" }}
+        options={{
+          headerTitle: 'Kullanıcı Kayıt',
+        }}
       />
     </Stack.Navigator>
   );
 }
 
 function AfterAuthenticatedStack() {
+  const authContext = useContext(AuthContext);
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#87cefa",
+          backgroundColor: 'blueviolet',
         },
-        headerTintColor: "white",
+        headerTintColor: 'white',
         contentStyle: {
-          backgroundColor: "#F8F6F4",
+          backgroundColor: 'white',
         },
       }}
     >
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerTitle: "Anasayfa" }}
+        options={{
+          headerTitle: 'Anasayfa',
+          headerRight: ({ tintColor }) => (
+            <Pressable
+              style={({ pressed }) => pressed && styles.pressed}
+              onPress={authContext.logout}
+            >
+              <Ionicons name="exit" size={24} color={tintColor} />
+            </Pressable>
+          ),
+        }}
       />
     </Stack.Navigator>
   );
@@ -63,8 +79,8 @@ function Navigation() {
   const authContext = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {!authContext.authenticate && <NormalStack />} 
-      {authContext.authenticate && <AfterAuthenticatedStack />} 
+      {!authContext.isAuthenticated && <NormalStack />}
+      {authContext.isAuthenticated && <AfterAuthenticatedStack />}
     </NavigationContainer>
   );
 }
@@ -78,10 +94,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  pressed: {
+    opacity: 0.5,
   },
 });
