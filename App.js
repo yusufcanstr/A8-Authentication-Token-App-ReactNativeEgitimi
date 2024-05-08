@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignupScreen from "./screens/SignupScreen";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
+import AuthContextProvider from "./store/auth-contextjs";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,16 +27,22 @@ function NormalStack() {
         component={LoginScreen}
         options={{ headerTitle: "Kullanıcı Giriş" }}
       />
-      <Stack.Screen name="Signup" component={SignupScreen} options={{headerTitle: "Kullanıcı Oluştur"}} />
+      <Stack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ headerTitle: "Kullanıcı Oluştur" }}
+      />
     </Stack.Navigator>
   );
 }
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <NormalStack />
-    </NavigationContainer>
+    <AuthContextProvider>
+      <NavigationContainer>
+        <NormalStack />
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }
 
